@@ -8,11 +8,19 @@ import (
 	"time"
 )
 
+// Burns the CPU
 func burn() {
 	var i int64
 
 	for {
 		i++
+	}
+}
+
+func tick() {
+	tick := time.Tick(10 * time.Second)
+	for range tick {
+		fmt.Print(".")
 	}
 }
 
@@ -22,15 +30,18 @@ func main() {
 	cpus := flag.Int("c", 0, "Numbers of Goroutines to spin up to burn CPU")
 	flag.Parse()
 
+	fmt.Println(time.Now().UTC())
+
 	if *cpus > 0 {
 		fmt.Printf("Starting %d Goroutines to burn CPU(s) without a deadline\n", *cpus)
 		for i := 1; i <= *cpus; i++ {
 			go burn()
 		}
+		tick()
 	} else {
 		go func() {
-			fmt.Println("CPU burning disabled, sleeping for 1 hour before exiting")
-			time.Sleep(1 * time.Hour)
+			fmt.Println("CPU burning disabled, sleeping...")
+			tick()
 		}()
 	}
 
