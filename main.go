@@ -37,11 +37,11 @@ func main() {
 		for i := 1; i <= *cpus; i++ {
 			go burn()
 		}
-		tick()
+		go tick()
 	} else {
 		go func() {
 			fmt.Println("CPU burning disabled, sleeping...")
-			tick()
+			go tick()
 		}()
 	}
 
